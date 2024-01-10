@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+# News scraper app made with Javascript and Python with NLP
+![Screenshot](https://github.com/coderJT/news_scraper/blob/master/public/screenshot.png) \
+This project mainly consists of a scraper and a dashboard. \
+The scraper is made with Selenium and BeautifulSoup, and tested on a news website https://thestar.com.my. \
+The dashboard is made with React.JS and styled with Material UI. \
+NLP methods: 
+1. Sentiment Analysis - Made with HuggingFace transformer module
+2. Summarizer - Made with Sumy's LsaSummarizer 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Dashboard overview
+1. A table of data consisting of fields (No, Title, Date, Tag/Category, Content) is displayed on the left side of the screen after data is fetched or scraped.
+   
+2.  Functionalities are provided and interactable through buttons in the middle part of the screen:
+  - Fetch news = Fetch previously scraped news from database (mongoDB) (~1-3 seconds)
+  - Scrape news = Create instance of scraper to scrape news from source (~15-20 seconds)
+  - Reset news = Clear data from database (~1-3 seconds)
+  - Sentiment analysis = Perform sentiment analysis on selected news article (~4-8 seconds)
+  - Summarize = Perform summarizing on selected news article (~1-3 seconds)
+  - Fetch news (With Tags) = Fetch previously scraped new from database according to tags
+  - Scrape news (With Tags) = Scrape news from source according to tags
 
-## Available Scripts
+3. A details column on the right side of the screen then displays the following info when a news is selected:
+   - Title
+   - Url
+   - Sentiment Analysis Result
+   - Summary
+   - Content
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+4. Limited selection of themes is added can be exposed through the sidebar.
