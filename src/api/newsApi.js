@@ -28,8 +28,8 @@ export const apiFetchNews = async () => {
 export const apiResetNews = async () => {
     try {
         const response = await fetch('/api/reset');
-        const data = await response.text();
-        return data;
+        const data = await response.json();
+        return [];
     } 
     catch (error) {
         console.error("(API) Error encountered at apiResetNews.", error);

@@ -1,5 +1,6 @@
 import logging
 import asyncio
+import waitress
 
 from flask import Flask, jsonify
 from bson import json_util
@@ -53,7 +54,7 @@ def server_reset_news():
     logger.info("(Server) Resetting...")
     result = collection.delete_many({})
     logger.info("(Server) Reset successed")
-    return ""
+    return {}
 
 @app.route('/api/sentimentAnalysis/<string:news_id>')
 def sentiment_analysis(news_id):
@@ -89,7 +90,7 @@ def get_scraped_data_by_tag(tags):
     finally:
         logger.info("(Server) Scraping process completed")
         news_scraper.tear_down()
-    result = list(collection.find())
+    result = list(collection.find({'tag': {'$in': tag_list}})) 
     return json_util.dumps(result)
 
 @app.route('/api/newstag=<path:tags>')
@@ -101,7 +102,8 @@ def fetch_news_with_tag(tags):
     return news_data
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=8080)
 
 
 
