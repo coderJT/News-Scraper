@@ -26,4 +26,4 @@ NLP methods:
    - Summary
    - Content
 
-4. Limited selection of themes is added can be exposed through the sidebar.
+4. Limited selection of themes is added and can be exposed through the sidebar.
