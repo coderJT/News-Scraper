@@ -1,5 +1,5 @@
 # News scraper app made with Javascript and Python with NLP
-![Screenshot](https://github.com/coderJT/news_scraper/blob/master/public/screenshot.png) \
+![Screenshot](https://github.com/coderJT/news_scraper_with_analytics/blob/master/src/Screenshot.png) \
 This project mainly consists of a scraper and a dashboard. \
 The scraper is made with Selenium and BeautifulSoup, and tested on a news website https://thestar.com.my. \
 The dashboard is made with React.JS and styled with Material UI. \
