@@ -58,7 +58,7 @@ export default function DashboardDetails() {
             <Typography>
                 {Object.keys(selectedNews).length 
                 ? <Divider>Content</Divider>
-                : "Click 'FETCH NEWS' and click on an item to start"}
+                : "Select an item to show its details"}
             </Typography>
 
             {/* Content */}

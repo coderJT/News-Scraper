@@ -1,6 +1,5 @@
 import logging
 import asyncio
-import waitress
 
 from flask import Flask, jsonify
 from bson import json_util
@@ -102,8 +101,7 @@ def fetch_news_with_tag(tags):
     return news_data
 
 if __name__ == '__main__':
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=8080)
+    app.run()
 
 
 

@@ -27,8 +27,9 @@ export default function DashboardNewsTable({}) {
                     </TableRow>
                 </TableHead>
                 { news.length > 0 ? 
-                <NewsItems></NewsItems> : 
-                <Typography variant="h6" sx={{p: 3}}>Choose Fetch News from the menu to start</Typography>}
+                    <NewsItems></NewsItems> : 
+                    <Typography variant="h6" sx={{p: 3}}>Choose Fetch News to start
+                </Typography>}
             </Table>
         </TableContainer>
     )

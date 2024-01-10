@@ -1,10 +1,8 @@
-import { TableBody, TableRow, TableCell, useMediaQuery } from "@mui/material";
+import { TableBody, TableRow, TableCell } from "@mui/material";
 import { useNewsContext } from "../../../utils/providers/newsProvider";
 import { useDashboardContext } from "../../../utils/providers/dashboardProvider";
 
 export default function NewsItems({}) {
-
-    const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
     const { news, handleSelectedNews } = useNewsContext();
     const { handleDialogOpen } = useDashboardContext();
