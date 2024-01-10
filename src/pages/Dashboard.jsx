@@ -4,66 +4,99 @@ import DashboardNewsTable from "../components/Dashboard/Main/NewsTable";
 import DashboardControlPanel from "../components/Dashboard/Main/ControlPanel";
 import DashboardDetails from "../components/Dashboard/Details/Details";
 import { useDashboardContext } from "../utils/providers/dashboardProvider";
-import { Box, ThemeProvider  } from "@mui/material";
+import { Hidden, Dialog, Box, ThemeProvider, Button, CircularProgress } from "@mui/material";
+import { useNewsContext } from "../utils/providers/newsProvider";
 
 export default function Dashboard() {
+  const { theme, dialogOpen, handleDialogOpen } = useDashboardContext();
+  const { providerSentimentAnalysis, providerSummarize, selectedNews, loading } = useNewsContext();
 
-    const { theme } = useDashboardContext();
-    
-    return (
-        <ThemeProvider theme={theme}>
-            <Box
-                sx={{
-                    display: 'grid',
-                    gridTemplateColumns: {
-                        xs: '1fr',
-                        sm: 'repeat(4, 1fr)'
-                    },
-                    gap: 2,
-                    gridTemplateRows: {
-                        xs: '50px 2fr 1fr',
-                        sm: '10% 1fr 1fr'
-                    },
-                    gridTemplateAreas: {
-                        xs: `'appbar'
-                             'main'
-                             'details'`,
-                        sm: `'appbar appbar appbar appbar'
+  return (
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            sm: "repeat(4, 1fr)",
+          },
+          gridTemplateRows: {
+            xs: "70px 2fr",
+            sm: "10% 1fr 1fr",
+          },
+          gridTemplateAreas: {
+            xs: `'appbar'
+                             'main'`,
+            sm: `'appbar appbar appbar appbar'
                              'main main main details'
-                             'main main main details'`
-                    },
-                    height: { xs: '200vh', sm: '100vh' }
-                }}>
-                <Box sx={{
-                    gridArea: 'appbar'
-                }}>
-                    <DashboardAppBar></DashboardAppBar>
-                    <DashboardSidebar></DashboardSidebar>
-                </Box>
+                             'main main main details'`,
+          },
+          height: { xs: "200vh", sm: "100vh" },
+        }}
+      >
 
-                <Box sx={{
-                    gridArea: 'main',
-                    overflowX: 'auto',
-                    overflowY: 'auto',
-                    display: 'flex',
-                    flexDirection: { xs: 'column', sm: 'row' },
-                    justifyContent: 'space-between',
-                    height: '100%',
-                }}>
+        {/* Appbar */}
+        <Box
+          sx={{
+            gridArea: "appbar",
+          }}
+        >
+          <DashboardAppBar></DashboardAppBar>
+          <DashboardSidebar></DashboardSidebar>
+        </Box>
+        
+        {/* Main content */}
+        <Box
+          sx={{
+            gridArea: "main",
+            overflowX: "auto",
+            overflowY: "auto",
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "center",
+            alignItem: "center",
+            height: "100%",
+          }}
+        >
+          <DashboardNewsTable></DashboardNewsTable>
+          <Hidden smDown>
+            <DashboardControlPanel></DashboardControlPanel>
+          </Hidden>
+        </Box>
 
-                    <DashboardNewsTable></DashboardNewsTable>
-                    <DashboardControlPanel></DashboardControlPanel>
+        {/* Details (mobile) */}
+        <Hidden smUp>
+            <Dialog fullWidth
+            open={dialogOpen}
+            onClose={handleDialogOpen}
+              sx={{
+                bgcolor: "primary.details",
+                overflowX: "auto",
+                overflowY: "auto",
+              }}
+            >
+                 <Box sx={{display: loading ? 'block' : 'none'}}>
+                    <CircularProgress sx={{color: "primary.details"}}/>
                 </Box>
+                <Button sx={{ backgroundColor: "primary.details", color: "primary.appbar"}} onClick={() => providerSentimentAnalysis(selectedNews.id)}>Sentiment Analysis</Button>
+                <Button sx={{ backgroundColor: "primary.details", color: "primary.appbar"}} onClick={() => providerSummarize(selectedNews.id)}>Summarize</Button>
+                <DashboardDetails></DashboardDetails>
+            </Dialog>
+        </Hidden>
 
-                <Box sx={{
-                    gridArea: 'details',
-                    bgcolor: 'primary.details',
-                    overflowX: 'auto',
-                    overflowY: 'auto',
-                }}>
-                    <DashboardDetails></DashboardDetails>
-                </Box>
-            </Box>
-        </ThemeProvider>
-    )
+        {/* Details */}
+        <Hidden smDown>
+          <Box
+            sx={{
+              gridArea: "details",
+              bgcolor: "primary.details",
+              overflowX: "auto",
+              overflowY: "auto"
+            }}
+          >
+            <DashboardDetails></DashboardDetails>
+          </Box>
+        </Hidden>
+      </Box>
+    </ThemeProvider>
+  );
 }

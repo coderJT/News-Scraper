@@ -1,7 +1,8 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import { useDashboardContext } from "../../../utils/providers/dashboardProvider";
-import { Drawer, Toolbar, IconButton, ListItemButton, ListItemText, List, ListSubheader, ListItem } from "@mui/material";
+import { Box, Drawer, Toolbar, IconButton, ListItemButton, ListItemText, List, ListSubheader, ListItem } from "@mui/material";
 import * as themes from "../../../utils/colors/colorThemes";
+import DashboardControlPanel from "../Main/ControlPanel";
 
 export default function DashboardSidebar() {
 
@@ -22,6 +23,17 @@ export default function DashboardSidebar() {
                     <MenuIcon />
                 </IconButton>
             </Toolbar>
+
+            {/* Show controls at sidebar for mobile */}
+            <Box sx={{
+                    overflowX: 'auto',
+                    overflowY: 'auto',
+                    display: { xs: 'flex', sm: 'none'},
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    justifyContent: 'space-between',
+                }}>
+                    <DashboardControlPanel></DashboardControlPanel>
+            </Box>
 
             {/* List all available themes as options */}
             {

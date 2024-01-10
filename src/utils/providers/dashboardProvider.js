@@ -10,6 +10,7 @@ export const useDashboardContext = () => {
 export const DashboardProvider = ({ children }) => {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [theme, setTheme] = useState(themeChill);
+    const [dialogOpen, setDialogOpen] = useState(false);
     const [tagChips, setTagChips] = useState([
         { selected: false, label: 'Tech' },
         { selected: false, label: 'Food' },
@@ -33,13 +34,15 @@ export const DashboardProvider = ({ children }) => {
         );
     };
 
+    const handleDialogOpen = () => setDialogOpen(!dialogOpen);
+
     const handleDrawer = () => setOpenDrawer(!openDrawer);
 
     const handleTheme = (selectedTheme) => setTheme(selectedTheme);
 
     return (
         <DashboardContext.Provider
-            value={{ handleTagChip, openDrawer, handleDrawer, handleTheme, theme, tagChips }}>
+            value={{ handleTagChip, openDrawer, handleDrawer, handleTheme, theme, tagChips, dialogOpen, handleDialogOpen }}>
             {children}
         </DashboardContext.Provider>
     );

@@ -1,14 +1,18 @@
-import { Box, TableContainer, Table, TableHead, TableRow, TableCell } from "@mui/material";
+import { Box, TableContainer, Table, TableHead, TableRow, TableCell, Typography } from "@mui/material";
 import NewsItems from "./NewsTableItem";
+import { useNewsContext } from "../../../utils/providers/newsProvider";
 
 export default function DashboardNewsTable({}) {
+
+    const { news } = useNewsContext();
+
     return (
         <TableContainer
             sx={{
                 overflowY: "auto",
                 minHeight: {sm: "100%"},
                 width: {xs: "100%", sm: "80%"},
-                height: {xs: "70%", sm: "100%"},
+                height: "100%",
                 backgroundColor: "primary.main"
             }}>
 
@@ -22,7 +26,9 @@ export default function DashboardNewsTable({}) {
                         <TableCell>Content</TableCell>
                     </TableRow>
                 </TableHead>
-                <NewsItems></NewsItems>
+                { news.length > 0 ? 
+                <NewsItems></NewsItems> : 
+                <Typography variant="h6" sx={{p: 3}}>Choose Fetch News from the menu to start</Typography>}
             </Table>
         </TableContainer>
     )
