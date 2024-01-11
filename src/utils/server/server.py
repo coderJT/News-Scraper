@@ -2,6 +2,7 @@ import logging
 import asyncio
 
 from flask import Flask, jsonify
+from flask_cors import CORS
 from bson import json_util
 from bson.objectid import ObjectId
 from pymongo import UpdateOne, MongoClient
@@ -11,6 +12,7 @@ from sentiment_analysis.sentiment_analysis_vader import analyse_sentiment
 from summarizer.summarizer import lsa_summarize
 
 app = Flask(__name__)
+CORS(app, origins=['http://localhost:3000', 'https://news-scraper-with-analytics.onrender.com'])
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
