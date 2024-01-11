@@ -1,7 +1,6 @@
 asyncio==3.4.3
 blinker==1.7.0
 breadability==0.1.20
-bson==0.5.10
 certifi==2023.11.17
 chardet==5.2.0
 charset-normalizer==3.3.2
