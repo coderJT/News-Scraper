@@ -7,7 +7,7 @@ from bson.objectid import ObjectId
 from pymongo import UpdateOne, MongoClient
 
 from scraper.scraper import Scraper
-from sentiment_analysis.sentiment_analysis import analyse_sentiment
+from sentiment_analysis.sentiment_analysis_vader import analyse_sentiment
 from summarizer.summarizer import lsa_summarize
 
 app = Flask(__name__)

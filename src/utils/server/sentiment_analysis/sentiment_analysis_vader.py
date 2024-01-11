@@ -1,41 +1,39 @@
+import nltk
 import asyncio
-from transformers import pipeline
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-classifier = pipeline('sentiment-analysis', 
-                      model='finiteautomata/bertweet-base-sentiment-analysis')
+nltk.download('vader_lexicon')
 
-# Helper function to perform sentiment analysis with classifier
+sid = SentimentIntensityAnalyzer()
+
 async def classify(data):
-    return classifier(data)
+    sentiment_scores = sid.polarity_scores(data)
+    
+    return [{'label': 'POSITIVE' if sentiment_scores['compound'] >= 0 else 'NEGATIVE',
+             'score': sentiment_scores['compound']}]
 
-# Main function to split a paragraph into sentences and perform sentiment analysis individually
 async def analyse_sentiment(data):
     paragraphs = [classify(sentence)
                   for sentence in data['content'].split(". ")]
+    
     sentiment_result = await asyncio.gather(*paragraphs)
     sentiment_flattened = [sentiment for sentiment_list in sentiment_result
                                     for sentiment in sentiment_list]
+    
     labels = [sentiment['label'] for sentiment in sentiment_flattened]
     scores = [sentiment['score'] for sentiment in sentiment_flattened]
 
-    weights = {
-        'POS' : 1,
-        'NEG' : -1,
-        'NEU' : 0
-    }
+    weighted_sum = sum(scores)
 
-    weighted_sum = sum(score * weights[label]
-                       for label, score in zip(labels, scores))
-    
     overall_sentiment = ''
     if weighted_sum == 0:
         overall_sentiment = 'NEUTRAL'
-    elif weighted_sum >= 0:
+    elif weighted_sum > 0:
         overall_sentiment = 'POSITIVE'
     else:
         overall_sentiment = 'NEGATIVE'
-    
+
     return {
-        'weighted_sum' : weighted_sum,
-        'overall_sentiment' : overall_sentiment
+        'weighted_sum': weighted_sum,
+        'overall_sentiment': overall_sentiment
     }
