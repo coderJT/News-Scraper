@@ -112,8 +112,7 @@ class Scraper:
         """
         Utilizes multiple threads to speed up scraping process of each article.
         """
-        # Currently set max_workers to 2 to avoid overusing memory of Render
-        with ThreadPoolExecutor(max_workers=1) as executor:
+        with ThreadPoolExecutor(max_workers=5) as executor:
             executor.map(self.get_articles_details, self.articles)
 
     def tear_down(self):

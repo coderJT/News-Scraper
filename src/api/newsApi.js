@@ -1,11 +1,9 @@
 // Make API calls to server.py 
-// const apiUrl = process.env.REACT_APP_API_URL;
-const apiUrl = ""
 
 // API call to scraper
 export const apiScrapeNews = async () => {
     try {
-        const response = await fetch(`${apiUrl}/api/scrape`);
+        const response = await fetch(`/api/scrape`);
         const data = await response.json();
         return data;
     } 
@@ -17,7 +15,7 @@ export const apiScrapeNews = async () => {
 
 export const apiFetchNews = async () => {
     try {
-        const response = await fetch(`${apiUrl}/api/news`);
+        const response = await fetch(`/api/news`);
         const data = await response.json();
         return data;
     } 
@@ -29,7 +27,7 @@ export const apiFetchNews = async () => {
 
 export const apiResetNews = async () => {
     try {
-        const response = await fetch(`${apiUrl}/api/reset`);
+        const response = await fetch(`/api/reset`);
         const data = await response.json();
         return [];
     } 
@@ -44,7 +42,7 @@ export const apiScrapeNewsWithTags = async (tags) => {
         const tag_list = tags.filter((tag) => {
             return tag.selected === true
         }).map(tag => tag.label).join("&");
-        const response = await fetch(`${apiUrl}/api/scrapetag=${tag_list}`);
+        const response = await fetch(`/api/scrapetag=${tag_list}`);
         const data = await response.json();
         return data;
     }
@@ -60,7 +58,7 @@ export const apiFetchNewsWithTags = async (tags) => {
         const tag_list = tags.filter((tag) => {
             return tag.selected === true
         }).map(tag => tag.label).join("&");
-        const response = await fetch(`${apiUrl}/api/newstag=${tag_list}`);
+        const response = await fetch(`/api/newstag=${tag_list}`);
         const data = await response.json();
         return data;
     }
@@ -73,7 +71,7 @@ export const apiFetchNewsWithTags = async (tags) => {
 // API call to sentiment analysis
 export const apiSentimentAnalysis = async (id) => {
     try {
-        const response = await fetch(`${apiUrl}/api/sentimentAnalysis/${id}`);
+        const response = await fetch(`/api/sentimentAnalysis/${id}`);
         const data = await response.json();
         return data;
     }
@@ -86,7 +84,7 @@ export const apiSentimentAnalysis = async (id) => {
 // API call to summarize
 export const apiSummarize = async (id) => {
     try {
-        const response = await fetch(`${apiUrl}/api/summarize/${id}`);
+        const response = await fetch(`/api/summarize/${id}`);
         const data = await response.text();
         return data;
     }
