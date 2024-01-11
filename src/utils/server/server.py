@@ -2,7 +2,7 @@ import logging
 import asyncio
 
 from flask import Flask, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from bson import json_util
 from bson.objectid import ObjectId
 from pymongo import UpdateOne, MongoClient
@@ -10,9 +10,9 @@ from pymongo import UpdateOne, MongoClient
 from scraper.scraper import Scraper
 from sentiment_analysis.sentiment_analysis_vader import analyse_sentiment
 from summarizer.summarizer import lsa_summarize
-
+    
 app = Flask(__name__)
-CORS(app, origins=['http://localhost:3000', 'https://news-scraper-with-analytics.onrender.com'])
+CORS(app)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -27,6 +27,7 @@ URL_WITH_TAG = 'https://www.thestar.com.my/news/latest?tag='
 
 # Handle routing 
 @app.route('/api/scrape')
+@cross_origin()
 def server_scrape_news():
     logger.info("(Server) Scraping news (All news)...")
     news_scraper = Scraper(url=URL, urlWithTag=URL_WITH_TAG)
@@ -45,12 +46,14 @@ def server_scrape_news():
     return json_util.dumps(result)
 
 @app.route('/api/news')
+@cross_origin()
 def server_fetch_news():
     logger.info("(Server) Obtaining list of scraped news from database...")
     result = list(collection.find())
     return json_util.dumps(result)
 
 @app.route('/api/reset')
+@cross_origin()
 def server_reset_news():
     logger.info("(Server) Resetting...")
     result = collection.delete_many({})
@@ -58,6 +61,7 @@ def server_reset_news():
     return {}
 
 @app.route('/api/sentimentAnalysis/<string:news_id>')
+@cross_origin()
 def sentiment_analysis(news_id):
     logger.info(f"Performing sentiment analysis for news_id: {news_id}...")
     target = collection.find_one({"_id": ObjectId(news_id)})
@@ -67,6 +71,7 @@ def sentiment_analysis(news_id):
     return result
 
 @app.route('/api/summarize/<string:news_id>')
+@cross_origin()
 def summarize(news_id):
     logger.info(f"Performing summarizing process for content of: {news_id}...")
     target = collection.find_one({"_id": ObjectId(news_id)})
@@ -76,6 +81,7 @@ def summarize(news_id):
     return result
 
 @app.route('/api/scrapetag=<path:tags>')
+@cross_origin()
 def get_scraped_data_by_tag(tags):
     logger.info(f"Scraping news by tag {tags}...")
     tag_list = tags.split('&')
@@ -95,6 +101,7 @@ def get_scraped_data_by_tag(tags):
     return json_util.dumps(result)
 
 @app.route('/api/newstag=<path:tags>')
+@cross_origin()
 def fetch_news_with_tag(tags):
     logger.info(f"Obtaining list of scraped news with tags {tags} from database...")
     tag_list = tags.split('&')
