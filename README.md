@@ -4,17 +4,17 @@ This project mainly consists of a scraper and a dashboard. \
 The scraper is made with Selenium and BeautifulSoup, and tested on a news website https://thestar.com.my. \
 The dashboard is made with React.JS and styled with Material UI. \
 NLP methods: 
-1. Sentiment Analysis - Made with HuggingFace transformer module
+1. Sentiment Analysis - Made with nltk library
 2. Summarizer - Made with Sumy's LsaSummarizer 
 
 ## Dashboard overview
 1. A table of data consisting of fields (No, Title, Date, Tag/Category, Content) is displayed on the left side of the screen after data is fetched or scraped.
    
 2.  Functionalities are provided and interactable through buttons in the middle part of the screen:
-  - Fetch news = Fetch previously scraped news from database (mongoDB) (~1-3 seconds)
-  - Scrape news = Create instance of scraper to scrape news from source (~15-20 seconds)
+  - Fetch news = Fetch previously scraped news from database (mongoDB) (~1-6 seconds)
+  - Scrape news = Create instance of scraper to scrape news from source (~20-30 seconds)
   - Reset news = Clear data from database (~1-3 seconds)
-  - Sentiment analysis = Perform sentiment analysis on selected news article (~4-8 seconds)
+  - Sentiment analysis = Perform sentiment analysis on selected news article (~1-3 seconds)
   - Summarize = Perform summarizing on selected news article (~1-3 seconds)
   - Fetch news (With Tags) = Fetch previously scraped new from database according to tags
   - Scrape news (With Tags) = Scrape news from source according to tags
@@ -27,3 +27,7 @@ NLP methods:
    - Content
 
 4. Limited selection of themes is added and can be exposed through the sidebar.
+
+## To start:
+   - npm install
+   - npm start (might take more time initially to download nltk files)
