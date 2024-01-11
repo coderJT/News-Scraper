@@ -110,7 +110,7 @@ nibabel==3.2.2
 nltk==3.8.1
 notebook==6.4.10
 notebook_shim==0.2.3
-numpy==1.26.3
+numpy==latest_version
 oauthlib==3.2.0
 opencv-python==4.6.0.66
 opt-einsum==3.3.0
@@ -169,7 +169,7 @@ rich==13.4.1
 rsa==4.8
 runcmd==2020.12.3
 safetensors==0.4.1
-scikit-learn==1.0.2
+scikit-learn==latest_version
 scipy==1.7.3
 seaborn==0.11.2
 selenium==4.11.2
