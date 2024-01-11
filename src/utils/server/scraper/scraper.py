@@ -42,7 +42,6 @@ class Scraper:
         wait_load = WebDriverWait(driver, 20).until(
             EC.visibility_of_all_elements_located((By.CSS_SELECTOR, ".focus-story, .more-story, .in-sec-story"))
         )
-
         time.sleep(3)
 
         # Get article name and article url and set tag as unknown
@@ -72,7 +71,7 @@ class Scraper:
                 EC.visibility_of_all_elements_located((By.XPATH, "//ul[contains(@class, 'timeline')]//descendant::li"))
             )
 
-            time.sleep(3)
+            time.sleep(3) # Modifying to below 3 might cause scraping to fail
 
             # Get article name, article url and article tags
             self.articles.extend(
@@ -113,15 +112,15 @@ class Scraper:
         """
         Utilizes multiple threads to speed up scraping process of each article.
         """
-        # Currently set max_workers to 1 to avoid overusing memory of Render
-        with ThreadPoolExecutor(max_workers=2) as executor:
+        # Currently set max_workers to 2 to avoid overusing memory of Render
+        with ThreadPoolExecutor(max_workers=1) as executor:
             executor.map(self.get_articles_details, self.articles)
 
     def tear_down(self):
         if self.driver:
             self.driver.close()
 
-        
+
 
 
 

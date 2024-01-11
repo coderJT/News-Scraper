@@ -1,5 +1,6 @@
 import logging
 import asyncio
+import time
 
 from flask import Flask, jsonify
 from flask_cors import CORS, cross_origin
@@ -10,7 +11,7 @@ from pymongo import UpdateOne, MongoClient
 from scraper.scraper import Scraper
 from sentiment_analysis.sentiment_analysis_vader import analyse_sentiment
 from summarizer.summarizer import lsa_summarize
-    
+
 app = Flask(__name__)
 CORS(app)
 logging.basicConfig(level=logging.INFO)
@@ -29,11 +30,18 @@ URL_WITH_TAG = 'https://www.thestar.com.my/news/latest?tag='
 @app.route('/api/scrape')
 @cross_origin()
 def server_scrape_news():
+    start = time.time()
     logger.info("(Server) Scraping news (All news)...")
     news_scraper = Scraper(url=URL, urlWithTag=URL_WITH_TAG)
     news_scraper.setup_driver()
+    end = time.time()
+    logger.info(f"Driver setup: {end - start:.4f} seconds")
     news_scraper.get_article_to_scrape()
+    end = time.time()
+    logger.info(f"Getting articles to scrape: {end - start:.4f} seconds")
     news_scraper.thread_scrape_details()
+    end = time.time()
+    logger.info(f"Scraped all articles: {end - start:.4f} seconds")
     try: 
         logger.info("(Server) Update database with scraped data...")
         bulk_operations = [UpdateOne({"name": data['name']}, {"$set": data}, upsert=True)
@@ -43,6 +51,8 @@ def server_scrape_news():
         logger.info("(Server) Scraping process completed")
         news_scraper.tear_down()
     result = list(collection.find())
+    end = time.time()
+    logger.info(f"{end - start:.4f} seconds")
     return json_util.dumps(result)
 
 @app.route('/api/news')
