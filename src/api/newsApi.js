@@ -1,5 +1,6 @@
 // Make API calls to server.py 
-const apiUrl = process.env.REACT_APP_API_URL;
+// const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = ""
 
 // API call to scraper
 export const apiScrapeNews = async () => {

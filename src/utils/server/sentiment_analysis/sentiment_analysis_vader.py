@@ -3,6 +3,7 @@ import asyncio
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 nltk.download('vader_lexicon')
+nltk.download('punkt')
 
 sid = SentimentIntensityAnalyzer()
 
