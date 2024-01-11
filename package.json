@@ -22,7 +22,7 @@
   "scripts": {
     "start": "concurrently \"npm run start-react\" \"npm run start-server\"",
     "start-react": "react-scripts start",
-    "start-server": "cd src/utils/server && gunicorn -b 127.0.0.1:8080 wsgi:app --log-level debug -k gevent",
+    "start-server": "cd src/utils/server && gunicorn -b 127.0.0.1:8080 -t 40 wsgi:app --log-level debug",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "proxy": "http://127.0.0.1:8080"
