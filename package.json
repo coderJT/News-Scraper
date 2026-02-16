@@ -23,7 +23,7 @@
   "scripts": {
     "start": "concurrently \"npm run start-react\" \"npm run start-server\"",
     "start-react": "react-scripts start",
-    "start-server": "cd src/utils/server && gunicorn wsgi:app --log-level debug",
+    "start-server": "export PYTHONPATH=$PYTHONPATH:$(pwd)/api && ./.venv/bin/python3 api/index.py",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "proxy": "http://127.0.0.1:8000"

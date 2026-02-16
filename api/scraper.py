@@ -28,21 +28,45 @@ class Scraper:
             response.raise_for_status()
             soup = BeautifulSoup(response.text, 'html.parser')
             
-            # Select articles based on the classes used in original scraper
-            # Standard CSS selectors for these classes
-            found_articles = soup.select('div.in-sec-story a, div.focus-story a, div.more-story a')
+            # Select articles based on clearer news-specific classes
+            # Only picking from sections likely to contain main news
+            found_articles = soup.select('div.in-sec-story a, div.focus-story a')
             
             # Format: [[text, href, tag]]
             self.articles = []
+            seen_hrefs = set()
+            
+            # Categories to exclude
+            exclude_list = ['/lifestyle/', '/food/', '/tech/', '/travel/', '/business/', '/entertainment/', '/culture/']
+            
             for a in found_articles:
                 text = a.get_text(strip=True)
                 href = a.get('href')
-                if href and not href.startswith('http'):
+                
+                # Basic validation
+                if not href or not text or len(text) < 15: # Longer titles usually mean news
+                    continue
+                    
+                if not href.startswith('http'):
                     href = 'https://www.thestar.com.my' + href
                 
-                # Filter as per original logic: must start with domain and not be all uppercase
-                if href and href.startswith('https://www.thestar.com.my') and text.upper() != text:
+                # Clean up URL (remove fragments/queries)
+                href = href.split('#')[0].split('?')[0]
+                
+                # Avoid duplicates and check for valid news structure
+                if href in seen_hrefs:
+                    continue
+                
+                # Filter: must start with domain, contain /news/ followed by a subcategory
+                # and NOT contain excluded categories
+                if (href.startswith('https://www.thestar.com.my/news/') and 
+                    text.upper() != text and
+                    not any(x in href.lower() for x in exclude_list)):
+                    
+                    # Further check: news articles usually have a date-like structure in URL or certain depth
+                    # e.g., /news/nation/2026/02/16/...
                     self.articles.append([text, href, ""])
+                    seen_hrefs.add(href)
                     
         except Exception as e:
             logger.error(f"Error getting articles to scrape: {e}")
@@ -100,7 +124,16 @@ class Scraper:
         
         story_body = soup.find(id='story-body')
         if story_body:
-            data['content'] = ' '.join([p.text for p in story_body.find_all("p", recursive=False)])
+            # More robust paragraph extraction, filtering out ads and navigational text
+            paragraphs = []
+            for p in story_body.find_all("p"):
+                text = p.get_text(strip=True)
+                # Skip short sentences or common ad/navigation strings
+                if text and len(text) > 10:
+                    lower_text = text.lower()
+                    if not any(x in lower_text for x in ["advertisement", "subscribe", "read also", "related story", "watching:"]):
+                        paragraphs.append(text)
+            data['content'] = ' '.join(paragraphs)
         else:
             data['content'] = ""
             
@@ -111,8 +144,10 @@ class Scraper:
         """
         Utilizes multiple threads to speed up scraping process of each article.
         """
+        # Filter out empty articles or invalid entries
+        valid_articles = [a for a in self.articles if a[1]]
         with ThreadPoolExecutor(max_workers=5) as executor:
-            executor.map(self.get_articles_details, self.articles)
+            executor.map(self.get_articles_details, valid_articles)
 
     def tear_down(self):
         # No-op now as we don't use Selenium

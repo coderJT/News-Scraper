@@ -10,20 +10,22 @@ export default function NewsItems() {
     const newsReversed = JSON.parse(JSON.stringify(news)).reverse();
     return (
         <TableBody>
-            {newsReversed && newsReversed.map((item, idx) => (
-                <TableRow key={item._id.$oid} 
-                          onClick={() => {handleSelectedNews({
-                                                id: item._id.$oid, 
-                                                name: item.name, 
-                                                url: item.url, 
-                                                content: item.content, 
-                                                category: item.category,
-                                                sa: "", 
-                                                sum: ""
-                                            })
-                                            handleDialogOpen()
-                                        }} 
-                          sx={{cursor: 'pointer'}}>
+            {newsReversed && newsReversed.map((item, idx) => {
+                const itemId = item._id?.$oid || `fallback-${idx}`;
+                return (
+                    <TableRow key={itemId} 
+                              onClick={() => {handleSelectedNews({
+                                                    id: itemId, 
+                                                    name: item.name, 
+                                                    url: item.url, 
+                                                    content: item.content, 
+                                                    category: item.category,
+                                                    sa: "", 
+                                                    sum: ""
+                                                })
+                                                handleDialogOpen()
+                                            }} 
+                              sx={{cursor: 'pointer'}}>
 
                     <TableCell align='center'>{idx + 1}</TableCell>
                     <TableCell scope='row'>{item.name}</TableCell>
@@ -36,7 +38,8 @@ export default function NewsItems() {
                         }
                     </TableCell>
                 </TableRow>
-            ))}
+                );
+            })}
         </TableBody>
     )
 }
