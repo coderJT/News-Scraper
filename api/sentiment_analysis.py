@@ -2,9 +2,18 @@ import nltk
 import asyncio
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-nltk.download('vader_lexicon')
-nltk.download('punkt')
+# Ensure necessary data is downloaded
+def setup_nltk():
+    try:
+        nltk.data.find('sentiment/vader_lexicon.zip')
+    except LookupError:
+        nltk.download('vader_lexicon')
+    try:
+        nltk.data.find('tokenizers/punkt.zip')
+    except LookupError:
+        nltk.download('punkt')
 
+setup_nltk()
 sid = SentimentIntensityAnalyzer()
 
 async def classify(data):
@@ -14,6 +23,12 @@ async def classify(data):
              'score': sentiment_scores['compound']}]
 
 async def analyse_sentiment(data):
+    if not data.get('content'):
+        return {
+            'weighted_sum': 0,
+            'overall_sentiment': 'NEUTRAL'
+        }
+        
     paragraphs = [classify(sentence)
                   for sentence in data['content'].split(". ")]
     
