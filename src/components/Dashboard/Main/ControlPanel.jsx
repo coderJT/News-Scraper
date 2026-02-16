@@ -69,7 +69,6 @@ export default function DashboardControlPanel() {
                 mt: 'auto',
                 display: "flex",
                 flexWrap: "wrap",
-                display: "flex",
                 gap: 1
             }}>
                 <Paper elevation={1} sx={{

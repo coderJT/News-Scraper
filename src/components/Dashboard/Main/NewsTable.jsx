@@ -1,8 +1,8 @@
-import { Box, TableContainer, Table, TableHead, TableRow, TableCell, Typography } from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableCell, Typography } from "@mui/material";
 import NewsItems from "./NewsTableItem";
 import { useNewsContext } from "../../../utils/providers/newsProvider";
 
-export default function DashboardNewsTable({}) {
+export default function DashboardNewsTable() {
 
     const { news } = useNewsContext();
 

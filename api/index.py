@@ -20,8 +20,15 @@ CORS(app) # Enable CORS for all routes
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# MongoDB connection setup - use environment variable if available
-MONGODB_URI = os.environ.get('MONGODB_URI', 'mongodb+srv://justin:Gls6XqWMldsOq7wY@cluster0.b4gf6nx.mongodb.net/?retryWrites=true&w=majority')
+# MongoDB connection setup - MUST be set in Vercel environment variables
+MONGODB_URI = os.environ.get('MONGODB_URI')
+
+if not MONGODB_URI:
+    # During local development, you can use a .env file or export the variable
+    logger.error("MONGODB_URI environment variable is not set!")
+    # Fallback to a placeholder for the user to see what's expected
+    MONGODB_URI = "mongodb+srv://justin:<db_password>@products.a2ruu.mongodb.net/?appName=Products"
+
 client = MongoClient(MONGODB_URI)
 db = client['news_database']
 collection = db['news_collection']

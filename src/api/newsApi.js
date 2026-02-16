@@ -27,8 +27,7 @@ export const apiFetchNews = async () => {
 
 export const apiResetNews = async () => {
     try {
-        const response = await fetch(`/api/reset`);
-        const data = await response.json();
+        await fetch(`/api/reset`);
         return [];
     } 
     catch (error) {

@@ -2,7 +2,7 @@ import { TableBody, TableRow, TableCell } from "@mui/material";
 import { useNewsContext } from "../../../utils/providers/newsProvider";
 import { useDashboardContext } from "../../../utils/providers/dashboardProvider";
 
-export default function NewsItems({}) {
+export default function NewsItems() {
 
     const { news, handleSelectedNews } = useNewsContext();
     const { handleDialogOpen } = useDashboardContext();

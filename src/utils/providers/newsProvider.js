@@ -177,5 +177,7 @@ const newsReducer = (news, action)  => {
             case 'FETCH_TAG_FAILURE':
             case 'SCRAPE_TAG_FAILURE':
                 return news;
+            default:
+                return news;
         }
     }
