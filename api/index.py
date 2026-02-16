@@ -10,9 +10,14 @@ from bson.objectid import ObjectId
 from pymongo import UpdateOne, MongoClient
 
 # Import our helper modules
-from .scraper import Scraper
-from .sentiment_analysis import analyse_sentiment
-from .summarizer import lsa_summarize
+import scraper as ScraperModule
+import sentiment_analysis as SentimentModule
+import summarizer as SummarizerModule
+
+# Use the classes/functions from the modules
+Scraper = ScraperModule.Scraper
+analyse_sentiment = SentimentModule.analyse_sentiment
+lsa_summarize = SummarizerModule.lsa_summarize
 
 app = Flask(__name__)
 CORS(app) # Enable CORS for all routes
@@ -60,13 +65,25 @@ def server_scrape_news():
     result = list(collection.find())
     end = time.time()
     logger.info(f"Total time: {end - start:.4f} seconds")
-    return json_util.dumps(result)
+    return app.response_class(
+        response=json_util.dumps(result),
+        status=200,
+        mimetype='application/json'
+    )
 
 @app.route('/api/news')
 def server_fetch_news():
     logger.info("(Server) Obtaining list of scraped news from database...")
-    result = list(collection.find())
-    return json_util.dumps(result)
+    try:
+        result = list(collection.find())
+        return app.response_class(
+            response=json_util.dumps(result),
+            status=200,
+            mimetype='application/json'
+        )
+    except Exception as e:
+        logger.error(f"Error fetching news: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/reset')
 def server_reset_news():
@@ -121,14 +138,22 @@ def get_scraped_data_by_tag(tags):
         logger.info("(Server) Scraping process completed")
         
     result = list(collection.find({'tag': {'$in': tag_list}})) 
-    return json_util.dumps(result)
+    return app.response_class(
+        response=json_util.dumps(result),
+        status=200,
+        mimetype='application/json'
+    )
 
 @app.route('/api/newstag=<path:tags>')
 def fetch_news_with_tag(tags):
     logger.info(f"Obtaining list of scraped news with tags {tags} from database...")
     tag_list = tags.split('&')
     news_data = list(collection.find({'tag': {'$in': tag_list}})) 
-    return json_util.dumps(news_data)
+    return app.response_class(
+        response=json_util.dumps(news_data),
+        status=200,
+        mimetype='application/json'
+    )
 
 # For local testing
 if __name__ == '__main__':

@@ -8,12 +8,15 @@ from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
 from sumy.parsers.plaintext import PlaintextParser
 
-# Ensure necessary data is downloaded
+# Ensure necessary data is downloaded to a writable location
 def setup_nltk():
+    nltk_data_path = "/tmp/nltk_data"
+    if nltk_data_path not in nltk.data.path:
+        nltk.data.path.append(nltk_data_path)
     try:
         nltk.data.find('tokenizers/punkt.zip')
     except LookupError:
-        nltk.download('punkt')
+        nltk.download('punkt', download_dir=nltk_data_path)
 
 setup_nltk()
 
